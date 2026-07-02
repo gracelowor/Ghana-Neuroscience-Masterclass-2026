@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import { useState, type FC } from "react";
 import { gitData } from "../data/gitData";
 import { CodeBlock } from "../components/CodeBlock";
 import { Terminal, Cpu, Info, Mail, Layers } from "lucide-react";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
-export const GitGuide: React.FC = () => {
+export const GitGuide: FC = () => {
+  useDocumentTitle("Git Guide");
   const [activeTab, setActiveTab] = useState("macos");
 
   return (
@@ -24,10 +26,14 @@ export const GitGuide: React.FC = () => {
       {/* OS tabs selection */}
       <section className="space-y-6">
         <div className="border-b border-slate-200">
-          <nav className="flex flex-wrap -mb-px gap-1" aria-label="Operating Systems">
+          <div className="flex flex-wrap -mb-px gap-1" role="tablist" aria-label="Operating Systems">
             {gitData.installations.map((os) => (
               <button
                 key={os.id}
+                id={`tab-${os.id}`}
+                role="tab"
+                aria-selected={activeTab === os.id}
+                aria-controls={`tabpanel-${os.id}`}
                 onClick={() => setActiveTab(os.id)}
                 className={`py-2.5 px-5 text-sm font-semibold border-b-2 transition-all duration-200 ${
                   activeTab === os.id
@@ -38,20 +44,25 @@ export const GitGuide: React.FC = () => {
                 {os.osName}
               </button>
             ))}
-          </nav>
+          </div>
         </div>
 
-        {/* Tab content panel */}
-        {gitData.installations.map((os) => {
-          if (os.id !== activeTab) return null;
-          return (
-            <div key={os.id} className="glass-panel rounded-xl p-6 space-y-4 shadow-sm animate-fade-in text-left">
-              <div className="flex items-center gap-2 text-slate-800">
-                <Terminal className="h-5 w-5 text-brand-indigo" />
-                <h3 className="font-display text-base font-bold">
-                  {os.osName} Guidelines
-                </h3>
-              </div>
+        {/* Tab content panels */}
+        {gitData.installations.map((os) => (
+          <div
+            key={os.id}
+            id={`tabpanel-${os.id}`}
+            role="tabpanel"
+            aria-labelledby={`tab-${os.id}`}
+            hidden={os.id !== activeTab}
+            className="glass-panel rounded-xl p-6 space-y-4 shadow-sm animate-fade-in text-left"
+          >
+            <div className="flex items-center gap-2 text-slate-800">
+              <Terminal className="h-5 w-5 text-brand-indigo" />
+              <h3 className="font-display text-base font-bold">
+                {os.osName} Guidelines
+              </h3>
+            </div>
 
               <div className="space-y-2">
                 <ol className="list-decimal list-inside space-y-2 text-sm text-slate-600">
@@ -76,8 +87,7 @@ export const GitGuide: React.FC = () => {
                 </div>
               ))}
             </div>
-          );
-        })}
+          ))}
       </section>
 
       {/* Cheat Sheet & Alternative Interfaces */}

@@ -6,26 +6,33 @@
   --font-display: 'Outfit', system-ui, -apple-system, sans-serif;
   
   --color-brand-dark: #f8fafc;
-  --color-brand-card: #ffffff;
   --color-brand-cyan: #0891b2;
-  --color-brand-blue: #2563eb;
   --color-brand-indigo: #4f46e5;
   --color-brand-purple: #7c3aed;
-  --color-brand-pink: #db2777;
 }
 
 /* Base custom styles and global resets */
-html, body {
-  background-color: var(--color-brand-dark);
-  color: #334155;
-  font-family: var(--font-sans);
-  scroll-behavior: smooth;
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
+html, body, #root {
+  height: 100%;
 }
 
-/* Custom glow animations for brain/neurology theme adjusted for light mode */
+#root > div {
+  height: 100%;
+}
+
+html {
+  background-color: var(--color-brand-dark);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  color: #334155;
+  font-family: var(--font-sans);
+}
+
+/* Glow animations for neurology theme */
 @keyframes pulseGlow {
   0%, 100% {
     opacity: 0.08;
@@ -55,7 +62,7 @@ html, body {
   animation: synapseLine 3.5s linear infinite;
 }
 
-/* Glassmorphism utility card base - light mode adapted */
+/* Glassmorphism card base */
 .glass-panel {
   background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(12px);
@@ -96,4 +103,25 @@ code {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+/* Page entrance animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Copy success icon pop */
+@keyframes scaleIn {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.animate-scale {
+  animation: scaleIn 0.3s ease-out;
 }

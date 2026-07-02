@@ -1,6 +1,7 @@
-import React from "react";
+import type React from "react";
 import { Link } from "react-router-dom";
 import { homeData } from "../data/homeData";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import {
   Brain,
   Network,
@@ -13,7 +14,9 @@ import {
   Target
 } from "lucide-react";
 
-const iconMap: Record<string, React.ComponentType<any>> = {
+type LucideIcon = React.ComponentType<{ className?: string }>;
+
+const iconMap: Record<string, LucideIcon> = {
   Brain,
   Network,
   Activity,
@@ -24,6 +27,7 @@ const iconMap: Record<string, React.ComponentType<any>> = {
 };
 
 export const Home: React.FC = () => {
+  useDocumentTitle("Home");
   return (
     <div className="space-y-12 animate-fade-in text-slate-700">
       {/* Hero Header Section */}
@@ -41,6 +45,7 @@ export const Home: React.FC = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-brand-cyan to-brand-indigo px-6 py-3.5 text-sm font-semibold text-white hover:opacity-95 transition-all duration-300 shadow-md shadow-brand-indigo/10"
+              aria-label="Register Now (opens in new tab)"
             >
               <span>Register Now</span>
               <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -68,8 +73,8 @@ export const Home: React.FC = () => {
               <img
                 src={homeData.logoUrl}
                 alt="Ghana Neuroscience Masterclass Logo"
-                className="w-72 h-72 sm:w-96 sm:h-96 object-contain rounded-2xl group-hover:scale-103 transition-transform duration-500"
-                loading="eager"
+                className="w-72 h-72 sm:w-96 sm:h-96 object-contain rounded-2xl group-hover:scale-105 transition-transform duration-500"
+                loading="lazy"
               />
             </div>
           </div>
@@ -135,6 +140,7 @@ export const Home: React.FC = () => {
           target="_blank"
           rel="noopener noreferrer"
           className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-brand-cyan to-brand-indigo px-6 py-3.5 text-sm font-semibold text-white hover:opacity-95 transition-all duration-300 shadow-md shadow-brand-indigo/10 whitespace-nowrap"
+          aria-label="Register Now (opens in new tab)"
         >
           <span>Register Now</span>
           <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />

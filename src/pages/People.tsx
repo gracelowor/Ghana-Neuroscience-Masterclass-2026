@@ -1,8 +1,12 @@
-import React from "react";
+import { useState, type FC } from "react";
 import { facultyStaff, advisors } from "../data/peopleData";
-import { Github, Linkedin, Mail, Award, Globe } from "lucide-react";
+import { Github, Linkedin, Mail, Award, Globe, Users } from "lucide-react";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
-export const People: React.FC = () => {
+export const People: FC = () => {
+  useDocumentTitle("People");
+  const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
+  const markLoaded = (name: string) => setLoadedImages((prev) => ({ ...prev, [name]: true }));
   return (
     <div className="space-y-12 animate-fade-in max-w-5xl mx-auto text-slate-700">
       {/* Faculty & Staff Header */}
@@ -26,12 +30,16 @@ export const People: React.FC = () => {
             <div className="p-5 pt-0 relative flex-grow flex flex-col space-y-5">
               {/* Photo representation */}
               <div className="flex justify-center -mt-16 mb-2">
-                <div className="h-32 w-32 rounded-full border-4 border-white overflow-hidden bg-slate-100 shadow-md">
+                <div className="h-32 w-32 rounded-full border-4 border-white overflow-hidden bg-slate-200 shadow-md relative">
+                  {!loadedImages[person.name] && (
+                    <div className="absolute inset-0 rounded-full bg-slate-200 animate-pulse" />
+                  )}
                   <img
                     src={person.imageUrl}
                     alt={person.name}
-                    className="h-full w-full object-cover"
+                    className={`h-full w-full object-cover transition-opacity duration-300 ${loadedImages[person.name] ? "opacity-100" : "opacity-0"}`}
                     loading="lazy"
+                    onLoad={() => markLoaded(person.name)}
                   />
                 </div>
               </div>
@@ -171,12 +179,16 @@ export const People: React.FC = () => {
               <div className="p-5 pt-0 relative flex-grow flex flex-col space-y-5">
                 {/* Photo representation */}
                 <div className="flex justify-center -mt-16 mb-2">
-                  <div className="h-32 w-32 rounded-full border-4 border-white overflow-hidden bg-slate-100 shadow-md">
+                  <div className="h-32 w-32 rounded-full border-4 border-white overflow-hidden bg-slate-200 shadow-md relative">
+                    {!loadedImages[person.name] && (
+                      <div className="absolute inset-0 rounded-full bg-slate-200 animate-pulse" />
+                    )}
                     <img
                       src={person.imageUrl}
                       alt={person.name}
-                      className="h-full w-full object-cover"
+                      className={`h-full w-full object-cover transition-opacity duration-300 ${loadedImages[person.name] ? "opacity-100" : "opacity-0"}`}
                       loading="lazy"
+                      onLoad={() => markLoaded(person.name)}
                     />
                   </div>
                 </div>
@@ -248,10 +260,24 @@ export const People: React.FC = () => {
           <Award className="h-5 w-5 text-brand-indigo" />
           <span>Students</span>
         </h2>
-        <div className="rounded-xl border-2 border-dashed border-slate-200 bg-slate-50/55 p-10 text-center">
-          <p className="text-slate-400 text-sm">
-            Student directory will be populated here.
-          </p>
+        <div className="glass-panel rounded-2xl p-10 text-center shadow-sm">
+          <div className="flex flex-col items-center gap-4">
+            <div className="flex -space-x-3">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="h-14 w-14 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center shadow-sm">
+                  <Users className="h-6 w-6 text-slate-300" />
+                </div>
+              ))}
+            </div>
+            <div className="space-y-1">
+              <p className="text-sm text-slate-500 font-medium">
+                Student Directory
+              </p>
+              <p className="text-xs text-slate-400 max-w-xs">
+                Student profiles will appear here once the cohort is selected.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
     </div>
